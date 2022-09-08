@@ -22,21 +22,63 @@ function Book(title,author,numberOfPages,readingStatus) {
 function addBookToLibrary(newBook){
     myLibrary.push(newBook);
     const booksInShelf = document.createElement("div");
+    const removeButton = document.createElement("button");
+    const readButton = document.createElement("button");
     booksInShelf.classList.add("card");
-    booksInShelf.innerHTML = `${newBook.title} ${newBook.author} ${newBook.numberOfPages} ${newBook.readingStatus}`;
+    booksInShelf.innerHTML = `Title:${newBook.title} Author:${newBook.author} Pages:${newBook.numberOfPages} Read before?: ${newBook.readingStatus}`;
     cards.append(booksInShelf);
+
+    //For Remove button
+    removeButton.innerHTML = "Remove";
+    removeButton.classList.add("removeButton");
+    removeButton.addEventListener("click", (e) =>{
+        booksInShelf.remove();
+    })
+    booksInShelf.append(removeButton);
+
+    //For read button
+    if (newBook.readingStatus === true){
+        readButton.innerHTML = "Read";
+        readButton.classList.toggle("inactive");
+    }
+    else{
+        readButton.innerHTML = "Not read";
+    }
+
+       
+    readButton.addEventListener("click", () =>{
+        readButton.classList.toggle("inactive");
+        if (readButton.innerHTML = "Read"){
+            readButton.innerHTML= "Not read";
+        }
+        else if (readButton.innerHTML = "Not read"){
+            readButton.innerHTML = "Read";
+        }
+            
+        })
+    booksInShelf.append(readButton);
+
+ 
 
 }
 
 
 const body = document.querySelector("body");
+const beforePopUp = document.getElementById("beforePopUp");
 
 buttonAddBook.addEventListener("click", ()=>{
-    body.classList.toggle("disappear");
+    // body.style.display = "none";
+    beforePopUp.classList.toggle("inactive");
     let form = document.createElement("form");
     form.setAttribute("method", "post");
     form.setAttribute("action", "");
     form.classList.add("form");
+
+    // Create title for form
+    var title = document.createElement("div");
+    title.innerHTML = "Add New Book";
+    title.classList.add("formTitle")
+    form.append(title);
     // Create an input element for title of book
     var titleOfBook = document.createElement("input");
     titleOfBook.setAttribute("type", "text");
@@ -49,7 +91,7 @@ buttonAddBook.addEventListener("click", ()=>{
     authorOfBook.setAttribute("name", "authorOfBook");
     authorOfBook.setAttribute("placeholder", "Author");
 
-    // Create an input element for author of book
+    // Create an input element for pages of book
     var numberOfPages = document.createElement("input");
     numberOfPages.setAttribute("type", "number");
     numberOfPages.setAttribute("name", "pages");
@@ -57,11 +99,10 @@ buttonAddBook.addEventListener("click", ()=>{
 
 
     var readingQuestion = document.createElement("div");
-    readingQuestion.innerHTML = "Have you read it?"
+    readingQuestion.innerHTML = "Have you read it?";
     var readingStatus = document.createElement("input");
     readingStatus.setAttribute("type", "checkbox");
     readingStatus.setAttribute("name", "readingStatus");
-    readingStatus.setAttribute("placeholder", "Have you read this book?");
 
     form.append(titleOfBook);
     form.append(authorOfBook);
@@ -86,7 +127,7 @@ buttonAddBook.addEventListener("click", ()=>{
 
 
     submitButton.addEventListener("click", (e) =>{
-        body.classList.toggle("disappear");
+        beforePopUp.classList.toggle("inactive");
         e.preventDefault();
         const newBook = new Book(form.elements["titleOfBook"].value ,form.elements["authorOfBook"].value, form.elements["pages"].
         value, form.elements["readingStatus"].checked);
