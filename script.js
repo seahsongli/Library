@@ -19,13 +19,24 @@ function Book(title,author,numberOfPages,readingStatus) {
     this.readingStatus = readingStatus;
 }
 
+
 function addBookToLibrary(newBook){
     myLibrary.push(newBook);
     const booksInShelf = document.createElement("div");
     const removeButton = document.createElement("button");
     const readButton = document.createElement("button");
     booksInShelf.classList.add("card");
-    booksInShelf.innerHTML = `Title:${newBook.title} Author:${newBook.author} Pages:${newBook.numberOfPages} Read before?: ${newBook.readingStatus}`;
+    // booksInShelf.innerHTML = `Title:${newBook.title} Author:${newBook.author}  Pages:${newBook.numberOfPages} + Read before?: ${newBook.readingStatus}`;
+    const firstLine = document.createElement("p");
+    const secondLine = document.createElement("p");
+    const thirdLine = document.createElement("p");
+    firstLine.innerHTML = `Title:${newBook.title}`;
+    secondLine.innerHTML = `Author:${newBook.author}`;
+    thirdLine.innerHTML = `Pages:${newBook.numberOfPages}`;
+    booksInShelf.append(firstLine);
+    booksInShelf.append(secondLine);
+    booksInShelf.append(thirdLine);
+    buttonAddBook.after(booksInShelf);
     cards.append(booksInShelf);
 
     //For Remove button
@@ -36,31 +47,50 @@ function addBookToLibrary(newBook){
     })
     booksInShelf.append(removeButton);
 
-    //For read button
+    // For read button
     if (newBook.readingStatus === true){
         readButton.innerHTML = "Read";
-        readButton.classList.toggle("inactive");
+        readButton.classList.toggle("active");
     }
-    else{
+    if (newBook.readingStatus === false){
         readButton.innerHTML = "Not read";
     }
 
        
     readButton.addEventListener("click", () =>{
-        readButton.classList.toggle("inactive");
-        if (readButton.innerHTML = "Read"){
+        readButton.classList.toggle("active");
+        if (newBook.readingStatus.value === true){
+            newBook.readingStatus.value = false;
             readButton.innerHTML= "Not read";
         }
-        else if (readButton.innerHTML = "Not read"){
+
+        if (newBook.readingStatus.value === false){
+            newBook.readingStatus.value = true;
             readButton.innerHTML = "Read";
         }
             
         })
+
+
+       
+//     readButton.addEventListener("click", () =>{
+//         readButton.classList.toggle("active");
+//         if (readButton.innerHTML == "Read"){
+//             readButton.innerHTML = "";
+//             readButton.innerHTML= "Not read";
+//         }
+
+//         if (readButton.innerHTML === "Not read"){
+//             readButton.innerHTML = "";
+//             readButton.innerHTML = "Read";
+//         }
+            
+//         })
     booksInShelf.append(readButton);
 
  
 
-}
+ }
 
 
 const body = document.querySelector("body");
@@ -97,7 +127,7 @@ buttonAddBook.addEventListener("click", ()=>{
     numberOfPages.setAttribute("name", "pages");
     numberOfPages.setAttribute("placeholder", "Pages");
 
-
+    // Create a checkbox for reading status
     var readingQuestion = document.createElement("div");
     readingQuestion.innerHTML = "Have you read it?";
     var readingStatus = document.createElement("input");
@@ -111,10 +141,6 @@ buttonAddBook.addEventListener("click", ()=>{
     readingQuestion.classList.add ("readingQuestion");
     form.append(readingQuestion);
     
-    // let title = window.prompt("What is the title of the book you want to add?");
-    // let author = window.prompt("Who is the author of the book you want to add?");
-    // let numberOfPages = window.prompt("How many pages are there in the book?");
-    // let readingStatus= window.prompt("Have you read this book?");
     var submitButton = document.createElement("button");
     submitButton.classList.add("submitButton")
     submitButton.innerHTML = "Submit";
